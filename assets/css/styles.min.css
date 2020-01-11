@@ -4,7 +4,7 @@
 }
 .login-dark{
   height:1000px;
-  background:url(/assets/img/star-sky.jpg?h=3cca5ffa01e51468067aa4967601ea52) #475d62;
+  background:url(/assets/img/star-sky.jpg) #475d62;
   background-size:cover;
   position:relative
 }
