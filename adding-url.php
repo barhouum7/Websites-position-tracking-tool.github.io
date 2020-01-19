@@ -1,3 +1,11 @@
+<!-- Start: PHP Code.. -->
+<?php 
+    session_start();
+    if(isset($_SESSION['url'])){
+        header('location: display-statistics.php');  // Redirect To display-statistics Page
+    }
+?>
+<!-- End: PHP Code.. -->
 <!DOCTYPE html>
 <html>
 
@@ -15,15 +23,46 @@
 </head>
 
 <body>
+    <!-- Start: PHP Code.. -->
+        <?php
+            include 'connect.php';
+
+            /* Check If Data Coming From HTTP Post Request. */
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $url = $_POST['url'];
+                $keywords = $_POST['keywords'];
+                
+                //echo $url . '<br /><br />' . $keywords;
+
+                /* Check If The URL Exist In The Database. */
+                $stmt = $dbConnect->prepare("SELECT `url` FROM `adding` WHERE `url` = ?");
+                $stmt->execute(array($url));
+                $fetch = $stmt->rowCount();
+                // echo '<br />' . $fetch;
+                /* If fetch > 0 This Mean The Database Contain Record About This URL */
+                if($fetch > 0){
+                    //     echo '<br />Welcome, Your URL is : ' . $url;
+                    // }else{
+                    //     echo '<br />Sorry! This URL Is Not Found. ';
+                    // }
+                    $_SESSION['url'] = $url;  // Register Session Name
+                    header('location: display-statistics.php');  // Redirect To display-statistics Page
+                    exit();
+                }else{
+                    echo "<script type='text/javascript'>alert('SORRY!, This URL Is Not Found.');</script>";  // Alert Message In Case The Database Hasn't Record About This URL. 
+                }
+            }
+        ?>
+    <!-- End: PHP Code -->
     <!-- Start: Login Form Dark -->
     <div class="login-dark">
-        <form method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
             <h2 class="sr-only">Login Form</h2>
             <div class="illustration">
                 <i class="icon ion-upload"></i>
             </div>
             <div class="form-group">
-                <input class="form-control" type="url" id="placeholder-url" placeholder="https://www.website-name.com/" autofocus="" required="" autocomplete="on" inputmode="url">
+                <input class="form-control" type="url" id="placeholder-url" placeholder="https://www.website-name.com/" autofocus="" required="" autocomplete="on" inputmode="url" name="url">
             </div>
             <div class="form-group">
                 <textarea class="form-control form-control-sm" placeholder="Keywords" rows="3" cols="3" name="keywords" autofocus="" autocomplete="on" required=""></textarea>

@@ -12,6 +12,7 @@ html, body {
 
 #logo-footer {
   display: flex;
+  float: left;
   max-height: 100px;
   margin-right: 18px;
   margin-left: 20px;
@@ -19,6 +20,7 @@ html, body {
   /*align-self: center;*/
   /*display: inline-block;*/
 }
+/*
 
 .sp-loading {
   text-align: center;
@@ -189,10 +191,9 @@ html, body {
     bottom: 25px;
   }
 }
+*/
 
 #placeholder-url {
-  /*margin-right: 10px;*/
-  /*padding-right: 40px;*/
   font-size: small;
 }
 
