@@ -1,5 +1,5 @@
 import pymysql
-############# OPEN DATABASE CONNECTION. ###############
+############# OPEN DATABASE CONNECTION.
 db = pymysql.connect("localhost","root","","seo-tracking-tool")
 ############# PREPARE A CURSOR OBJECT USING cursor() METHOD.
 cursor = db.cursor()
