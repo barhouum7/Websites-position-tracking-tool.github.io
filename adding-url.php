@@ -1,9 +1,10 @@
 <!-- Start: PHP Code.. -->
 <?php 
-    session_start();
-    if(isset($_SESSION['url'])){
-        header('location: display-statistics.php');  // Redirect To display-statistics Page
-    }
+    // session_start();
+    // if(isset($_SESSION['url'])){
+    //     header('location: display-statistics.php');  // Redirect To display-statistics Page
+    // }
+    /* ********************* The Code Above Just Was For Testing ********************* */
 ?>
 <!-- End: PHP Code.. -->
 <!DOCTYPE html>
@@ -40,17 +41,24 @@
                 $fetch = $stmt->rowCount();
                 // echo '<br />' . $fetch;
                 /* If fetch > 0 This Mean The Database Contain Record About This URL */
-                if($fetch > 0){
-                    //     echo '<br />Welcome, Your URL is : ' . $url;
-                    // }else{
-                    //     echo '<br />Sorry! This URL Is Not Found. ';
-                    // }
-                    $_SESSION['url'] = $url;  // Register Session Name
-                    header('location: display-statistics.php');  // Redirect To display-statistics Page
-                    exit();
-                }else{
-                    echo "<script type='text/javascript'>alert('SORRY!, This URL Is Not Found.');</script>";  // Alert Message In Case The Database Hasn't Record About This URL. 
-                }
+                
+                    if($fetch > 0){
+                        //     echo '<br />Welcome, Your URL is : ' . $url;
+                        // }else{
+                        //     echo '<br />Sorry! This URL Is Not Found. ';
+                        // }
+                        // $_SESSION['url'] = $url;  // Register Session Name
+                        // header('location: display-statistics.php');  // Redirect To display-statistics Page
+                        // exit();
+                        echo "<script type='text/javascript'>alert('SORRY!, This URL Is Already Registered In The Database.');</script>";  // Alert Message In Case The given URL Is Already Registered In The Database.
+                    }else{
+                        $insert = $dbConnect->prepare("INSERT INTO `adding` (`url`,`keywords`) VALUES(?,?)");
+                        $insert->execute(array($url,$keywords));
+                                               
+                        echo "<script type='text/javascript'>alert('Your URL Is Registered Successfully.');</script>";  // Successful Message In Case This URL Isn't Exist In The Database Already..
+                        header('location: display-statistics.php');  // Redirect To display-statistics Page
+                        exit();
+                    }
             }
         ?>
     <!-- End: PHP Code -->
