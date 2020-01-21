@@ -9,5 +9,5 @@ try{
   // echo 'You are Connected ! Welcome to Database.';
 }
 catch(PDOException $e){
-  echo 'Failed To Connect !' . $e->setMessage();
+  echo 'Failed To Connect !' . $e->getMessage();
 }
