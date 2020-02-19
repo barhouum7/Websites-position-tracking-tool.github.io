@@ -34,7 +34,7 @@
       table {
         border-collapse: collapse;
         position: absolute;
-        left: 30%;
+        left: 15%;
         right: auto;
         margin-top: 50px;
         box-shadow: 10px 10px 30px black;
@@ -45,6 +45,8 @@
       }
       tbody {
         background-color: rgba(255, 166, 0, 0.158);
+        color: black;
+        font-weight: bold;
       }
     </style>
 </head>
@@ -65,8 +67,10 @@
     echo "<div><table>";
  echo "<thead>
  <tr>
-   <th>KEYWORDS</th>
    <th>WEBSITE URL</th>
+   <th>KEYWORDS</th>
+   <th>KEYWORDS POSITION</th>
+   <th>VERIFICATION DATE</th>
  </tr>
  </thead><tbody>";
 
@@ -88,13 +92,20 @@ class TableRows extends RecursiveIteratorIterator {
     }
 }
     include 'connect.php';
-    $stmt = $dbConnect->prepare('SELECT `keywords`,`url` FROM `adding`');
-    $stmt->execute();
+    $stmt = $dbConnect->prepare('SELECT `url`, `terms` FROM `site` LEFT JOIN `keywords` ON ? = ?');
+    $stmt->execute(array(`site`.`terms-ID` , `keywords`.`terms-ID`));
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     foreach(new TableRows(new RecursiveArrayIterator($fetch = $stmt->fetchAll())) as $k=>$v) {
-      echo $v;
+      if(!$v){
+        echo '';
+      }else{
+        echo $v;
+      }
     }
-    
+    //include_once 'pos-update.py';
+    //$command = "python pos-update.py";
+    $run = exec("python pos-update.py");
+
     $dbConnect = null;
     echo '</tbody>
     </table>

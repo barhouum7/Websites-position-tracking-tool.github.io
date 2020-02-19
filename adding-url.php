@@ -36,7 +36,7 @@
                 //echo $url . '<br /><br />' . $keywords;
 
                 /* Check If The URL Exist In The Database. */
-                $stmt = $dbConnect->prepare("SELECT `url` FROM `adding` WHERE `url` = ?");
+                $stmt = $dbConnect->prepare("SELECT `url` FROM `site` WHERE `url` = ?");
                 $stmt->execute(array($url));
                 $fetch = $stmt->rowCount();
                 // echo '<br />' . $fetch;
@@ -52,8 +52,10 @@
                         // exit();
                         echo "<script type='text/javascript'>alert('SORRY!, This URL Is Already Registered In The Database.');</script>";  // Alert Message In Case The given URL Is Already Registered In The Database.
                     }else{
-                        $insert = $dbConnect->prepare("INSERT INTO `adding` (`url`,`keywords`) VALUES(?,?)");
-                        $insert->execute(array($url,$keywords));
+                        $insert_url = $dbConnect->prepare("INSERT INTO `site` (`url`) VALUES(?)");
+                        $insert_url->execute(array($url));
+                        $insert_terms = $dbConnect->prepare("INSERT INTO `keywords` (`terms`) VALUES(?)");
+                        $insert_terms->execute(array($keywords));
                                                
                         echo "<script type='text/javascript'>alert('Your URL Is Registered Successfully.');</script>";  // Successful Message In Case This URL Isn't Exist In The Database Already..
                         header('location: display-statistics.php');  // Redirect To display-statistics Page
